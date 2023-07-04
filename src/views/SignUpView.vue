@@ -19,12 +19,11 @@ const login = ref('')
 const password = ref('')
 
 const handleSignUp = async () => {
-  const result = await signUp({
+  await signUp({
     name: name.value,
     login: login.value,
     password: password.value
   })
-  console.log("result", result)
 }
 </script>
 
