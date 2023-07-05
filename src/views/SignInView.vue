@@ -24,7 +24,7 @@ const handleSignIn = async () => {
     login: login.value,
     password: password.value
   })
-  authStore.setToken(result.token)
+  authStore.setToken(result.data.token)
 }
 </script>
 
