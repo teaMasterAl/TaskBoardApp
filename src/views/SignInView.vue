@@ -1,31 +1,31 @@
 <template>
   <div>
     <h2>Авторизация</h2>
-    <div>
-      <input type="text" placeholder="Логин" v-model="login" />
-      <input type="password" placeholder="Пароль" v-model="password" />
-      <button @click="handleSignIn">Войти</button>
-    </div>
+
+    <form>
+      <input type="text" placeholder="Логин" v-model="fields.login" />
+      <input type="password" placeholder="Пароль" v-model="fields.password" />
+
+      <button type="submit" @click.prevent="onSignIn">Войти</button>
+    </form>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import { signIn } from '@/api/auth'
-import { useAuthStore } from '@/stores/auth'
-
-const login = ref('')
-const password = ref('')
+import { useAuthStore, IUser } from '~/stores/auth'
+import router from "~/router";
 
 const authStore = useAuthStore()
 
-const handleSignIn = async () => {
-  const result = await signIn({
-    login: login.value,
-    password: password.value
-  })
-  authStore.setToken(result.data.token)
+const fields = ref<IUser>({
+  login: '',
+  password: ''
+})
+
+const onSignIn = async () => {
+  await authStore.login(fields.value)
+
+  router.push({ name: 'home'})
 }
 </script>
-
-<style scoped></style>

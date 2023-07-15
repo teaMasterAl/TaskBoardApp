@@ -1,7 +1,13 @@
 import apiRequest from "./apiRequest";
+import type {IUser} from "~/stores/auth";
 
-export const signUp = async (user) =>
-    await apiRequest('POST', '/auth/signup', user)
+interface ILoginResponse {
+    token: string
+}
 
-export const signIn = async (user) =>
-    await apiRequest('POST', '/auth/login', user)
+export const api = {
+    auth: {
+        login: (user: IUser): Promise<ILoginResponse> => apiRequest('POST', '/auth/login', user),
+        register: (user: IUser): Promise<boolean> => apiRequest('POST', '/auth/signup', user)
+    },
+}
