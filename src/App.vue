@@ -14,14 +14,12 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { onBeforeMount } from 'vue'
+import { useAuthStore } from '~/stores/auth'
 
 const authStore = useAuthStore()
 
-onMounted(() => {
-  authStore.initAuth()
+onBeforeMount(() => {
+  authStore.hasToken && authStore.authorize()
 })
 </script>
-
-<style scoped></style>

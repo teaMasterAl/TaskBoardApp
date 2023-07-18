@@ -1,30 +1,30 @@
 <template>
   <div>
     <h2>Регистрация</h2>
-    <div>
-      <input type="text" placeholder="Имя" v-model="name" />
-      <input type="text" placeholder="Логин" v-model="login" />
-      <input type="password" placeholder="Пароль" v-model="password" />
-      <button @click="handleSignUp">Зарегистрироваться</button>
-    </div>
+
+    <form>
+      <input type="text" placeholder="Имя" v-model="fields.name" />
+      <input type="text" placeholder="Логин" v-model="fields.login" />
+      <input type="password" placeholder="Пароль" v-model="fields.password" />
+
+      <button type="submit" @click.prevent="onSignUp">Зарегистрироваться</button>
+    </form>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import { signUp } from '@/api/auth'
+import { useAuthStore, IUser } from '~/stores/auth'
 
-const name = ref('')
-const login = ref('')
-const password = ref('')
+const authStore = useAuthStore()
 
-const handleSignUp = async () => {
-  await signUp({
-    name: name.value,
-    login: login.value,
-    password: password.value
-  })
+const fields = ref<IUser>({
+  name: '',
+  login: '',
+  password: ''
+})
+
+const onSignUp = async () => {
+  await authStore.register(fields.value)
 }
 </script>
-
-<style scoped></style>

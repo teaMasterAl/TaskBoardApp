@@ -1,24 +1,13 @@
-export const signUp = async (user) => {
-  const response = await fetch('http://localhost:3001/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
-    body: JSON.stringify(user)
-  })
+import apiRequest from "./apiRequest";
+import type {IUser} from "~/stores/auth";
 
-  return await response.json()
+interface ILoginResponse {
+    token: string
 }
 
-// TODO сделать универсальную функцию для запросов к API
-export const signIn = async (user) => {
-    const response = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(user)
-    })
-
-    return await response.json()
+export const api = {
+    auth: {
+        login: (user: IUser): Promise<ILoginResponse> => apiRequest('POST', '/auth/login', user),
+        register: (user: IUser): Promise<boolean> => apiRequest('POST', '/auth/signup', user)
+    },
 }

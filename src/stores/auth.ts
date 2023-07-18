@@ -1,20 +1,50 @@
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { defineStore } from 'pinia'
+import { api } from "~/api/auth";
+
+export interface IUser {
+    name?: string,
+    login: string,
+    password: string
+}
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref('')
+    const token = ref<string>('')
 
-  const setToken = (authToken) => {
-    token.value = authToken
-    localStorage.setItem('token', authToken)
-  }
+    const hasToken = computed(() => Boolean(localStorage.getItem('token')))
 
-    const initAuth = () => {
-        const authToken = localStorage.getItem('token')
-        if(authToken){
-            token.value = authToken
-        }
+    const login = async (params: IUser) => {
+
+        const data = await api.auth.login(params)
+        console.log("data", data)
+
     }
 
-  return { token, setToken, initAuth }
+    const register = async (params: IUser) => {
+
+        await api.auth.register(params)
+
+        // TODO: после создания пользователя - его авторизовать
+    }
+
+    const setToken = (authToken: string) => {
+        token.value = authToken
+
+        localStorage.setItem('token', authToken)
+    }
+
+    const authorize = () => {
+        // TODO: fetch profile
+        token.value = localStorage.getItem('token') as string
+    }
+
+  return {
+      token,
+      hasToken,
+
+      login,
+      register,
+      setToken,
+      authorize
+  }
 })
