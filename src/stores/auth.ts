@@ -1,6 +1,6 @@
 import {computed, ref} from 'vue'
 import { defineStore } from 'pinia'
-import { api } from "~/api/auth";
+import { api } from "~/api/api";
 
 export interface IUser {
     name?: string,
@@ -17,6 +17,9 @@ export const useAuthStore = defineStore('auth', () => {
 
         const data = await api.auth.login(params)
         console.log("data", data)
+        if( data?.token ) {
+            setToken(data.token)
+        }
 
     }
 
