@@ -25,7 +25,6 @@ const fields = ref<IUser>({
 
 const onSignIn = async () => {
   await authStore.login(fields.value)
-
-  router.push({ name: 'home'})
+  await router.push({ name: 'home'})
 }
 </script>
