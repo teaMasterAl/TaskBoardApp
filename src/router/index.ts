@@ -1,27 +1,30 @@
-import { createRouter, createWebHistory, RouterOptions } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import SignUpView from '@/views/SignUpView.vue'
-import SignInView from '@/views/SignInView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes } from './routes'
+
+import {useAuthStore} from "~/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpView
-    },
-    {
-      path: '/signin',
-      name: 'signin',
-      component: SignInView
-    },
-  ]
-} as RouterOptions)
+  routes
+})
+
+// TODO: перенести в миддлвары
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  const routeName = to.name as string
+
+  if (['signin', 'signup'].includes(routeName)) {
+    return next()
+  }
+
+  if (!authStore.token) {
+    next({ name: 'signin' })
+
+    return
+  }
+
+  next()
+})
 
 export default router

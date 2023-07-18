@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
   <header>
     <div class="wrapper">
@@ -16,5 +12,14 @@ import { RouterLink, RouterView } from 'vue-router'
   <RouterView />
 </template>
 
-<style scoped>
-</style>
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import { onBeforeMount } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
+
+onBeforeMount(() => {
+  authStore.hasToken && authStore.authorize()
+})
+</script>
