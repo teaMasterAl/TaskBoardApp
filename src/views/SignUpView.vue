@@ -14,7 +14,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore, IUser } from '~/stores/auth'
+import { useAuthStore } from '~/stores/auth'
+import { IUser } from "~/types/IUser";
 
 const authStore = useAuthStore()
 

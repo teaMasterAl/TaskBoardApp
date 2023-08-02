@@ -1,9 +1,7 @@
 import apiRequest from "./apiRequest";
-import type {IUser} from "~/stores/auth";
+import type { IUser } from "~/types/IUser";
+import {ILoginResponse} from "~/types/ILoginResponse";
 
-interface ILoginResponse {
-    token: string
-}
 
 export const api = {
     auth: {
